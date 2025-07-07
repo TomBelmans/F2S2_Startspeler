@@ -1,0 +1,78 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Kassa.ViewModels"
+             xmlns:models="clr-namespace:Kassa.Models"
+             x:Class="Kassa.Views.BestellingDetailPage"
+             x:DataType="viewmodels:BestellingDetailViewModel"
+             Title="{Binding Title}"
+             Background="{StaticResource BackgroundGradient}">
+
+
+    <ContentPage.Resources>
+        <!-- Hier voeg je de DataTemplate toe met een x:Key attribuut -->
+        <DataTemplate x:Key="OrderlijnTemplate" x:DataType="models:Orderlijn">
+            <Frame Padding="10" Margin="5" CornerRadius="10" HasShadow="True" >
+                <HorizontalStackLayout>
+                    <!-- Bind de juiste eigenschappen aan de Orderlijn -->
+                    <Image MaximumWidthRequest="100" MaximumHeightRequest="100" Source="{Binding Product.AfbeeldingSource}" Aspect="AspectFill" />
+                    <StackLayout>
+                        <Label Text="{Binding Product.Naam}" FontSize="Medium" />
+                        <Label Text="{Binding Product.Beschrijving}" FontSize="Small" />
+                        <Label Text="{Binding TotaalAantal, StringFormat='Aantal: {0}'}" FontSize="Small" />
+                    </StackLayout>
+                </HorizontalStackLayout>
+            </Frame>
+        </DataTemplate>
+
+        
+    </ContentPage.Resources>
+    <ScrollView>
+        <StackLayout Margin="10">
+            <HorizontalStackLayout Spacing="5" Margin="5">
+                <Label Text="Gebruikersnaam: " FontSize="Medium" TextColor="White"/>
+                <Label Text="{Binding Bestelling.Gebruiker.VolledigeNaam}" TextColor="White" FontSize="Medium" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Spacing="5" Margin="5">
+                    <Label Text="Tafelnummer: " FontSize="Medium" TextColor="White"/>
+                <Label Text="{Binding Bestelling.TafelNummer}" FontSize="Medium" TextColor="White"/>
+                </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Entry Text="{Binding Bestelling.TafelNummer, Mode=TwoWay}" Keyboard="Numeric" Placeholder="Tafelnummer" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Spacing="5" Margin="5">
+                <Label Text="Klantnaam: " FontSize="Medium" TextColor="White"/>
+                <Label Text="{Binding Bestelling.KlantNaam}" TextColor="White" FontSize="Medium" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Entry Text="{Binding Bestelling.KlantNaam, Mode=TwoWay}" Placeholder="Klantnaam" />
+            </HorizontalStackLayout>
+            <StackLayout Margin="5">
+                <Label Text="Tijdstip:" FontSize="Medium" TextColor="White" />
+                <Label Text="{Binding Bestelling.Datum}" FontSize="Medium" TextColor="White" />
+            </StackLayout>
+            <HorizontalStackLayout Spacing="5" Margin="5">
+                <Label Text="Prijs:" FontSize="Medium" TextColor="White"/>
+                <Label Text="{Binding Bestelling.TotaalPrijs, StringFormat='€{0:F2}'}" TextColor="White" FontSize="Medium" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout>
+                <Entry Text="{Binding Bestelling.TotaalPrijs,StringFormat='{0:F2}', Mode=TwoWay}" Placeholder="Prijs" />
+            </HorizontalStackLayout>
+            <StackLayout Spacing="10">
+                <Label Text="Verwerkt:" FontSize="Medium" TextColor="White"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Nee" FontAttributes="Bold" FontSize="Medium" VerticalOptions="Center" Margin="5" TextColor="White" />
+                    <Switch IsToggled="{Binding Bestelling.BestellingVerwerkt, Mode=TwoWay}" />
+                    <Label Text="Ja" FontAttributes="Bold" FontSize="Medium" VerticalOptions="Center" Margin="5" TextColor="White" />
+                </StackLayout>
+            </StackLayout>
+            <Label Text="Producten:" FontSize="Medium" TextColor="White" />
+            <!-- Hier voeg je de CollectionView toe met de DataTemplate -->
+            <CollectionView ItemsSource="{Binding Bestelling.Orderlijnen}"
+                        ItemTemplate="{StaticResource OrderlijnTemplate}" />
+            <StackLayout Orientation="Horizontal" MaximumWidthRequest="300">
+                <Button Text="Bewerken" Command="{Binding BewerkBestellingCommand}" Margin="5" />
+                <Button Text="Verwijderen" Command="{Binding VerwijderBestellingCommand}" Margin="5"/>
+            </StackLayout>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Companion.ViewModels"
+             xmlns:models="clr-namespace:Companion.Models"
+             x:Class="Companion.Views.WinkelwagenPage"
+             x:DataType="viewmodels:WinkelwagenViewModel"
+             Title="{Binding Title}"
+             Background="{StaticResource BackgroundGradient}">
+
+    <Grid RowDefinitions="*, Auto" Padding="10">
+         
+        <ScrollView Grid.Row="0">
+            <CollectionView ItemsSource="{Binding Winkelmand}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Orderlijn">
+                        <StackLayout Orientation="Horizontal" Padding="10">
+                            <Image WidthRequest="50" HeightRequest="50" Aspect="AspectFill" Source="{Binding Product.AfbeeldingSource}"/>
+                            <Label Text="{Binding Product.naam}" FontSize="Medium" VerticalOptions="Center" TextColor="Black" />
+                            <Label Text=" - " FontSize="Medium" VerticalOptions="Center" />
+                            <Label Text="{Binding TotaalAantal}" FontSize="Medium" VerticalOptions="Center" TextColor="Black"/>
+                            <Button Text="Verwijderen" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:WinkelwagenViewModel}}, Path=VerwijderProductCommand}" CommandParameter="{Binding .}" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+
+        <StackLayout Grid.Row="1" Spacing="10">
+            <Label Text="Tafelnummer:" />
+            <Entry Text="{Binding GeselecteerdeTafelNummer, Mode=TwoWay}" Keyboard="Numeric" />
+            <Label Text="Opmerkingen:" />
+            <Entry Text="{Binding Opmerking, Mode=TwoWay}" />
+            <Label Text="Klantnaam:" />
+            <Entry Text="{Binding KlantNaam, Mode=TwoWay}" />
+            <Label Text="{Binding TotaalPrijsWinkelmand, StringFormat='Totaal: €{0:0.00}'}" FontSize="Medium" />
+            <Button Text="Plaats Bestelling" Command="{Binding PlaatsBestellingCommand}" />
+        </StackLayout>
+    </Grid>
+</ContentPage>

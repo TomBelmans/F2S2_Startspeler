@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Companion.ViewModels"
+             xmlns:models="clr-namespace:Companion.Models"
+             x:Class="Companion.Views.MenukaartPage"
+             x:DataType="viewmodels:MenukaartViewModel"
+             Title="{Binding Title}"
+             Background="{StaticResource BackgroundGradient}"
+             x:Name="menukaartPage">
+
+    <Grid RowDefinitions="*, Auto" Padding="10">
+
+        <!-- Scrollbare productlijst -->
+        <ScrollView Grid.Row="0">
+            <StackLayout>
+                <CollectionView ItemsSource="{Binding Producten}" SelectionMode="Single"  SelectedItem="{Binding GeselecteerdProduct}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Product">
+                            <Frame Margin="5" Padding="10">
+                                <Grid ColumnDefinitions="Auto, *, Auto"
+                                      RowDefinitions="Auto, Auto, Auto, Auto, Auto">
+                                    <!-- Afbeelding -->
+                                    <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="4"
+                                           WidthRequest="80"
+                                           HeightRequest="80"
+                                           Aspect="AspectFill"
+                                           Source="{Binding AfbeeldingSource}"/>
+                                    <!-- Naam -->
+                                    <Label Grid.Row="0" Grid.Column="1"
+                                           Text="{Binding naam}" 
+                                           FontSize="Medium"
+                                           TextColor="Black"
+                                           FontAttributes="Bold"
+                                           VerticalOptions="Center"
+                                           Padding="2"/>
+                                    <!-- Prijs -->
+                                    <Label Grid.Row="2" Grid.Column="1"
+                                           Text="{Binding prijs, StringFormat='€{0:0.00}'}" 
+                                           FontSize="Medium"
+                                           TextColor="Green"
+                                           VerticalOptions="Center"
+                                           Padding="2"/>
+                                    <!-- Beschikbaarheid -->
+                                    <Label Grid.Row="1" Grid.Column="1"
+                                           Text="{Binding beschikbaarheid}" 
+                                           FontSize="Small"
+                                           TextColor="Black"
+                                           VerticalOptions="Center"
+                                           Padding="2"/>
+                                    <!-- Beschrijving -->
+                                    <Label Grid.Row="3" Grid.Column="1"
+                                           Text="{Binding beschrijving}" 
+                                           FontSize="Small"
+                                           TextColor="Black"
+                                           VerticalOptions="Center"
+                                           Padding="2"/>
+                                    <!-- Stepper en Label -->
+                                    <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" VerticalOptions="Center">
+                                        <Stepper Grid.Column="0"
+                                                 Minimum="0"
+                                                 Increment="1"
+                                                 Maximum="100"
+                                                 Value="{Binding AantalInWinkelmand, Mode=TwoWay}"
+                                                 WidthRequest="320"
+                                                 HeightRequest="50"
+                                                 HorizontalOptions="Start"
+                                                 ValueChanged="OnStepperValueChanged" />
+                                        <Label Grid.Column="1"
+                                               Text="{Binding AantalInWinkelmand}"
+                                               TextColor="Black"
+                                               FontSize="Medium"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="End"
+                                               Padding="5"/>
+                                    </Grid>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
+
+        <!-- Vaste sectie onderaan de pagina -->
+        <StackLayout Grid.Row="1" Spacing="10">
+            <!-- Lijst van geselecteerde producten -->
+            <StackLayout>
+                <ListView ItemsSource="{Binding Winkelmand}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Orderlijn">
+                            <ViewCell>
+                                <Grid Padding="10" ColumnDefinitions="Auto, *, *, Auto" RowDefinitions="Auto">
+                                    <Image Grid.Row="0" Grid.Column="0" Source="{Binding Product.AfbeeldingSource}" HeightRequest="30"/>
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding Product.naam}" FontSize="Medium" VerticalOptions="Center" TextColor="Black" Margin="10,0,0,0"/>
+                                    <Label Grid.Row="0" Grid.Column="2" Text="{Binding Product.PrijsPerProduct, StringFormat='€{0:0.00}', Mode=TwoWay}" FontSize="Medium" VerticalOptions="Center" TextColor="Black" Margin="10,0,0,0"/>
+                                    <Label Grid.Row="0" Grid.Column="3" Text="{Binding TotaalAantal, Mode=TwoWay}" FontSize="Medium" VerticalOptions="Center" TextColor="Black" HorizontalOptions="End"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+
+            <!-- Knop om naar de winkelwagen te gaan -->
+            <Button Text="Ga naar winkelwagen" Command="{Binding NavigateToWinkelwagenCommand}" />
+        </StackLayout>
+
+    </Grid>
+</ContentPage>

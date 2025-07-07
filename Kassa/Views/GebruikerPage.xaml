@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Kassa.ViewModels"
+             xmlns:models="clr-namespace:Kassa.Models"
+             x:Class="Kassa.Views.GebruikerPage"
+             x:DataType="viewmodels:GebruikerViewModel"
+             Title="{Binding Title}"
+             Background="{StaticResource BackgroundGradient}">
+
+    <Grid RowDefinitions="*" ColumnDefinitions="*, *" IsVisible="{Binding IsBeheerder}">
+        <CollectionView Grid.Row="0" Grid.Column="0" SelectionMode="Single" ItemsSource="{Binding Gebruikers}" EmptyView="Geen gebruikers om weer te geven" SelectedItem="{Binding SelectedGebruiker}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Gebruiker">
+                    <VerticalStackLayout Padding="5">
+                        <Frame Padding="10" Margin="5" CornerRadius="10" HasShadow="True" >
+                            <StackLayout>
+                                <Label Text="{Binding VolledigeNaam}" FontSize="Medium"/>
+                                <Label Text="{Binding UserName, StringFormat='Gebruikersnaam: {0}'}" FontSize="Small" />
+                                <Label Text="{Binding Email, StringFormat='Email adres: {0}'}" FontSize="Small" />
+                                <Label Text="{Binding Rol.Name, StringFormat='Gebruikersrol: {0}'}" FontSize="Small" TextColor="{StaticResource Primary}"/>
+                            </StackLayout>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:GebruikerViewModel}}, Path=SelectGebruikerCommand}" CommandParameter="{Binding .}"/>
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <ScrollView Grid.Row="0" Grid.Column="1">
+            <VerticalStackLayout Spacing="10" Padding="20" VerticalOptions="StartAndExpand">
+                <Label Text="{Binding ActieLabel}" FontSize="Header" TextColor="White"/>
+
+                <!--Gebruikersnaam-->
+                <HorizontalStackLayout>
+                    <Label Text="Gebruikersnaam"  VerticalOptions="Center" TextColor="White" FontSize="Medium" />
+                </HorizontalStackLayout>
+                <Entry Placeholder="Gebruikersnaam" Text="{Binding SelectedGebruiker.UserName}"/>
+
+                <!--Voornaam-->
+                <HorizontalStackLayout>
+                    <Label Text="Voornaam"  VerticalOptions="Center" TextColor="White" FontSize="Medium" />
+                </HorizontalStackLayout>
+                <Entry Placeholder="Voornaam" Text="{Binding SelectedGebruiker.Voornaam}"/>
+
+                <!--Achternaam-->
+                <HorizontalStackLayout>
+                    <Label Text="Achternaam"  VerticalOptions="Center" TextColor="White" FontSize="Medium" />
+                </HorizontalStackLayout>
+                <Entry Placeholder="Achternaam" Text="{Binding SelectedGebruiker.Achternaam}"/>
+
+                <!--Email-->
+                <HorizontalStackLayout>
+                    <Label Text="Email"  VerticalOptions="Center" TextColor="White" FontSize="Medium" />
+                </HorizontalStackLayout>
+                <Entry Placeholder="Email" Text="{Binding SelectedGebruiker.Email}"/>
+
+                <!--Rol-->
+                <HorizontalStackLayout>
+                    <Label Text="Gebruikersrol" VerticalOptions="Center" TextColor="White" FontSize="Medium"/>
+                </HorizontalStackLayout>
+                <Picker ItemsSource="{Binding Rollen}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedGebruiker.Rol, Mode=TwoWay}" />
+
+                <HorizontalStackLayout Margin="0,20,0,0">
+                    <HorizontalStackLayout Margin="0,0,20,0">
+                        <Button Text="Gebruiker verwijderen" Command="{Binding VerwijderenCommand}"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Margin="0,0,20,0">
+                        <Button Text="Gebruiker Wijzigen" Command="{Binding WijzigenCommand}"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout Margin="0,0,20,0">
+                        <Button Text="Gebruiker deselecteren" Command="{Binding DeselecterenCommand}"/>
+                    </HorizontalStackLayout>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HorizontalOptions="Fill" VerticalOptions="Center" Color="{StaticResource Primary}" Grid.RowSpan="1" Grid.ColumnSpan="1" />
+    </Grid>
+</ContentPage>

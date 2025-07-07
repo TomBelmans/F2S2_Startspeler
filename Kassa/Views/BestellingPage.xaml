@@ -1,0 +1,87 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Kassa.ViewModels"
+             xmlns:models="clr-namespace:Kassa.Models"
+             xmlns:converters="clr-namespace:Kassa.Converters"
+             x:Class="Kassa.Views.BestellingPage"
+             x:DataType="viewmodels:BestellingViewModel"
+             Title="{Binding Title}"
+             Background="{StaticResource BackgroundGradient}">
+
+    <ContentPage.Resources>
+        <converters:IsBetaaldToBackgroundColorConverter x:Key="IsBetaaldToBackgroundColorConverter" />
+        <!-- Hier voeg je de DataTemplate toe met een x:Key attribuut -->
+        <DataTemplate x:Key="OrderlijnTemplate" x:DataType="models:Orderlijn">
+            <Frame Padding="10" Margin="5" CornerRadius="10" HasShadow="True">
+                <HorizontalStackLayout>
+                    <!-- Bind de juiste eigenschappen aan de Orderlijn -->
+                    <Image MaximumWidthRequest="100" MaximumHeightRequest="100" Source="{Binding Product.AfbeeldingSource}" Aspect="AspectFill" />
+                    <StackLayout>
+                        <Label Text="{Binding Product.Naam}" FontSize="Medium" />
+                        <Label Text="{Binding Product.Beschrijving}" FontSize="Small" />
+                        <Label Text="{Binding TotaalAantal, StringFormat='Aantal: {0}'}" FontSize="Medium" />
+                    </StackLayout>
+                </HorizontalStackLayout>
+            </Frame>
+        </DataTemplate>
+    </ContentPage.Resources>
+    <ScrollView>
+        <StackLayout Orientation="Vertical" Margin="10">
+            <Grid ColumnDefinitions="*, auto">
+                <!-- Filter Section -->
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="Filters" FontSize="Large" TextColor="White" />
+                    <Button Text="Alle Bestellingen" Command="{Binding ShowAlleBestellingenCommand}" />
+                    <Button Text="Niet Verwerkte Bestellingen" Command="{Binding ShowNietVerwerkteBestellingenCommand}"/>
+                    <Button Text="Verwerkte Bestellingen" Command="{Binding ShowVerwerkteBestellingenCommand}"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout Grid.Column="1">
+                <Button Text="Bestelling afrekenen" Command="{Binding NavigeerNaarAfrekenenCommand}" HorizontalOptions="End" Margin="0,0,10,0" Background="White" TextColor="Blue"/>
+                <Button Text="Exporteer naar Excel" Command="{Binding ExportBestellingenToExcelCommand}" HorizontalOptions="End"/>
+                </HorizontalStackLayout>
+            </Grid>
+
+            <CollectionView Grid.Row="0" 
+                    ItemsSource="{Binding Bestellingen}" 
+                    SelectionMode="Single" 
+                    EmptyView="Geen bestellingen om weer te geven!" 
+                    SelectedItem="{Binding SelectedBestelling}"
+                    SelectionChangedCommand="{Binding OpenDetailPageCommand}"
+                    SelectionChangedCommandParameter="{Binding SelectedBestelling}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="3" HorizontalItemSpacing="10" VerticalItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <!-- Hier pas je de OrderlijnTemplate toe als ItemTemplate -->
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Bestelling">
+                        <Frame BorderColor="{Binding BestellingVerwerkt, Converter={StaticResource IsBetaaldToBackgroundColorConverter}}">
+                            <StackLayout Orientation="Vertical">
+                                <StackLayout>
+                                    <!-- Bind de juiste eigenschappen aan de Bestelling -->
+                                    <Label Text="Gebruikersnaam" />
+                                    <Label Text="{Binding Gebruiker.VolledigeNaam}" FontSize="Medium" />
+                                    <Label Text="Tafelnummer" />
+                                    <Label Text="{Binding TafelNummer}" FontSize="Large" />
+                                    <Label Text="Klantnaam" />
+                                    <Label Text="{Binding KlantNaam}" FontSize="Medium" />
+                                    <Label Text="Datum" />
+                                    <Label Text="{Binding Datum}" FontSize="Small" />
+                                    <Label Text="Opmerking" />
+                                    <Label Text="{Binding Opmerking}" FontSize="Medium" />
+                                    <Label Text="Prijs" />
+                                    <Label Text="{Binding TotaalPrijs, StringFormat='€{0:F2}'}" FontSize="Medium" />
+                                    <Label Text="Betaald"/>
+                                    <Label Text="{Binding Betaald}" FontSize="Medium" />
+                                    <Label Text="Verwerkt"/>
+                                    <Label Text="{Binding Verwerkt}" FontSize="Medium" />
+                                </StackLayout>
+                                <!-- Hier voeg je de OrderlijnTemplate toe -->
+                                <CollectionView ItemsSource="{Binding Orderlijnen}" ItemTemplate="{StaticResource OrderlijnTemplate}"/>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

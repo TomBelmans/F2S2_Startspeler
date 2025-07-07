@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell x:Class="Kassa.AppShell"
+       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:Kassa"
+       xmlns:views="clr-namespace:Kassa.Views"
+       xmlns:models="clr-namespace:Kassa.Models"
+       xmlns:viewmodels="clr-namespace:Kassa.ViewModels"
+       Shell.TabBarIsVisible="False"
+       x:Name="mainShell"
+       x:DataType="viewmodels:LoginViewModel"
+       Title="{Binding Title}">
+
+    <ShellContent
+        Title=""
+        ContentTemplate="{DataTemplate views:LoginPage}"
+        FlyoutItemIsVisible="False"
+        Shell.FlyoutBehavior="Disabled"
+        Route="LoginPage" />
+
+    <FlyoutItem Route="ProductenPage" FlyoutDisplayOptions="AsMultipleItems" >
+        <ShellContent
+        Title="Bestellingsoverzicht"
+        Icon="{x:Static models:Icons.OrderIcon}"
+        ContentTemplate="{DataTemplate views:BestellingPage}"
+        Route="BestellingenPage" />
+        
+        <ShellContent
+        Title="Producten/Stockbeheer"
+        Icon="{x:Static models:Icons.ProductIcon}"
+        ContentTemplate="{DataTemplate views:ProductPage}"
+        Route="ProductenPage" />
+
+        <ShellContent
+        Title="Gebruikers"
+        Icon="{x:Static models:Icons.UsersIcon}"
+        ContentTemplate="{DataTemplate views:GebruikerPage}"
+        Route="GebruikerPage" />
+
+    </FlyoutItem>
+
+    <ShellContent
+        Title="Log uit"
+        Icon="logouticon.png"
+        ContentTemplate="{DataTemplate views:LogoutPage}"
+        Shell.FlyoutBehavior="Disabled"
+        Route="LogoutPage" />
+
+</Shell>

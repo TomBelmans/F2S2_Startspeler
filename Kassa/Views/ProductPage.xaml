@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Kassa.ViewModels"
+             xmlns:models="clr-namespace:Kassa.Models"
+             x:Class="Kassa.Views.ProductPage"
+             x:DataType="viewmodels:ProductViewModel"
+             Title="{Binding Title}"
+             Background="{StaticResource BackgroundGradient}">
+
+    <Grid RowDefinitions="auto, *" ColumnDefinitions="*, *">
+        <!-- Filter Section -->
+        <StackLayout Grid.Row="0" Grid.ColumnSpan="2" Padding="10">
+            <ScrollView Orientation="Horizontal">
+                <HorizontalStackLayout Spacing="10">
+                    <Label Text="Filter producten" FontSize="Large" TextColor="White" />
+                    <Button Text="Frisdrank" Command="{Binding FilterFrisdrankCommand}"/>
+                    <Button Text="Alcoholische Drank" Command="{Binding FilterAlcoholischeDrankCommand}"/>
+                    <Button Text="Warme Drank" Command="{Binding FilterWarmeDrankCommand}"/>
+                    <Button Text="Snack" Command="{Binding FilterSnackCommand}"/>
+                    <ImageButton Source="price_up.png" Command="{Binding FilterGoedkoopNaarDuurCommand}" WidthRequest="40" HeightRequest="40" ToolTipProperties.Text="Prijs oplopend" Background="White"/>
+                    <ImageButton Source="price_down.png" Command="{Binding FilterDuurNaarGoedkoopCommand}" WidthRequest="40" HeightRequest="40" ToolTipProperties.Text="Prijs aflopend" Background="White"/>
+                </HorizontalStackLayout>
+            </ScrollView>
+        </StackLayout>
+
+        <!-- Producten -->
+        <CollectionView Grid.Row="1" 
+                        ItemsSource="{Binding Products}" 
+                        SelectionMode="Single" 
+                        EmptyView="No items to display" 
+                        SelectedItem="{Binding SelectedProduct}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="3" HorizontalItemSpacing="10" VerticalItemSpacing="10"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Product">
+                    <Frame>
+                        <StackLayout Orientation="Vertical">
+                            <StackLayout HorizontalOptions="CenterAndExpand">
+                                <Frame Style="{StaticResource ImageFrameStyle}">
+                                    <Image MaximumWidthRequest="250" MaximumHeightRequest="250" Source="{Binding AfbeeldingSource}" Aspect="AspectFill" />
+                                </Frame>
+                            </StackLayout>
+                            <StackLayout>
+                                <Label Text="{Binding Naam}" FontSize="Large" />
+                                <Label Text="{Binding Prijs, StringFormat='€{0:F2}'}" FontSize="Medium" />
+                                <Label Text="{Binding Beschrijving}" FontSize="Small" />
+                                <Label Text="{Binding Aantal, StringFormat='Aantal: {0}'}" FontSize="Small" />
+                            </StackLayout>
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Activiteitsindicator -->
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" HorizontalOptions="Fill" VerticalOptions="Center" Color="{StaticResource Primary}" Grid.RowSpan="2" Grid.ColumnSpan="2" />
+
+        <!-- Details en acties -->
+        <ScrollView Grid.Row="1" Grid.Column="1">
+            <VerticalStackLayout Spacing="10">
+
+                <Label Text="{Binding ActieLabel}" FontSize="Header" TextColor="White"/>
+                <Label Text="{Binding ValidatieText}" TextColor="Red"/>
+                <Image Source="{Binding SelectedProduct.AfbeeldingSource}" MaximumWidthRequest="300" Aspect="AspectFit"/>
+                <Button HorizontalOptions="CenterAndExpand" Text="Upload/wijzig afbeelding" Command="{Binding UploadAfbeeldingCommand}" />
+                <Label Text="Naam" TextColor="White" FontSize="Medium"/>
+                <Entry Text="{Binding SelectedProduct.Naam}" Placeholder="Naam" />
+                <Label Text="Prijs" TextColor="White" FontSize="Medium"/>
+                <Entry Text="{Binding SelectedProduct.Prijs, StringFormat='{0:F2}'}" Placeholder="Prijs" />
+                <Label Text="Beschrijving" TextColor="White" FontSize="Medium"/>
+                <Entry Text="{Binding SelectedProduct.Beschrijving}" Placeholder="Beschrijving" />
+                <Label Text="Aantal" TextColor="White" FontSize="Medium"/>
+                <Entry Text="{Binding SelectedProduct.Aantal}" Placeholder="Aantal" />
+                <Label Text="Product Type" TextColor="White" FontSize="Medium"/>
+                <Picker ItemsSource="{Binding Producttypes}" SelectedItem="{Binding SelectedProduct.Producttype}" ItemDisplayBinding="{Binding Naam}" />
+
+                <HorizontalStackLayout Spacing="10">
+                    <Button Text="Toevoegen" Command="{Binding AddProductCommand}"/>
+                    <Button Text="Wijzigen" Command="{Binding UpdateProductCommand}"/>
+                    <Button Text="Verwijderen" Command="{Binding DeleteProductCommand}"/>
+                    <Button Text="Deselecteren" Command="{Binding DeselectProductCommand}"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

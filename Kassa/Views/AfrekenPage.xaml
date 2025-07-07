@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Kassa.ViewModels"
+             xmlns:models="clr-namespace:Kassa.Models"
+             x:Class="Kassa.Views.AfrekenPage"
+             x:DataType="viewmodels:AfrekenViewModel"
+             Title="{Binding Title}"
+             Background="{StaticResource BackgroundGradient}">
+
+    <Grid RowDefinitions="Auto, *" ColumnDefinitions="*, *">
+        <!-- Filter Section -->
+        <HorizontalStackLayout Spacing="10" Grid.ColumnSpan="2" Margin="10">
+            <Label Text="Filter Gebruiker" FontSize="Large" TextColor="White" />
+            <Entry x:Name="FilterEntry" Placeholder="Zoek gebruiker" Text="{Binding Achternaam}" WidthRequest="300"/>
+            <Button Text="Zoeken" Command="{Binding FilterOpAchternaamCommand}" />
+        </HorizontalStackLayout>
+        <!-- Linker sectie voor opsomming van alle bestellingen -->
+        <VerticalStackLayout Grid.Row="1" Grid.Column="0" Padding="5">
+            <CollectionView SelectionMode="Single" ItemsSource="{Binding Bestellingen}" EmptyView="Geen items om te tonen" SelectedItem="{Binding SelectedBestelling}">
+                <CollectionView.Header>
+                    <Grid Padding="10" ColumnDefinitions="*, *, *, *, *,*">
+                        <Label Text="Gebruikersnaam" FontAttributes="Bold" Grid.Column="0"/>
+                        <Label Text="Klantnaam" FontAttributes="Bold" Grid.Column="1"/>
+                        <Label Text="Datum" FontAttributes="Bold" Grid.Column="2"/>
+                        <Label Text="Aantal bestellingen" FontAttributes="Bold" Grid.Column="3"/>
+                        <Label Text="Aantal orders" FontAttributes="Bold" Grid.Column="4" />
+                        <Label Text="Totaalbedrag" FontAttributes="Bold" Grid.Column="5"/>
+                    </Grid>
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Bestelling">
+                        <Grid Padding="5" ColumnDefinitions="*, *, *, *, *,*">
+                            <Label Text="{Binding Gebruiker.VolledigeNaam}" Grid.Column="0"/>
+                            <Label Text="{Binding KlantNaam}" Grid.Column="1"/>
+                            <Label Text="{Binding Datum, StringFormat='{}{0:dd-MM-yyyy}'}" Grid.Column="2"/>
+                            <Label Text="{Binding AantalBestellingen}" Grid.Column="3" />
+                            <Label Text="{Binding Orderlijnen.Count}" Grid.Column="4" />
+                            <Label Text="{Binding TotaalPrijsAfrekening, StringFormat='{}{0:C}'}" Grid.Column="5"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+
+        <!-- Rechter sectie voor details van geselecteerde bestelling -->
+        <ScrollView Grid.Row="1" Grid.Column="1" Padding="10">
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Details bestelling" FontSize="Large" FontAttributes="Bold"/>
+                <Label Text="Klantnaam"/>
+                <Entry Text="{Binding SelectedBestelling.KlantNaam}" IsEnabled="False"/>
+                <Label Text="Totaalbedrag"/>
+                <Entry Text="{Binding SelectedBestelling.TotaalPrijsAfrekening, StringFormat='{}{0:C}'}" IsEnabled="False"/>
+                <Label Text="Producten in bestelling" FontSize="Medium" FontAttributes="Bold"/>
+                <CollectionView ItemsSource="{Binding SelectedBestelling.Orderlijnen}" EmptyView="Geen items om te tonen">
+                    <CollectionView.Header>
+                        <Grid Padding="10" ColumnDefinitions="*, *, *">
+                            <Label Text="Productnaam" FontAttributes="Bold" Grid.Column="0"/>
+                            <Label Text="Aantal" FontAttributes="Bold" Grid.Column="1"/>
+                            <Label Text="Eenheidsprijs" FontAttributes="Bold" Grid.Column="2"/>
+                        </Grid>
+                    </CollectionView.Header>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Orderlijn">
+                            <Grid Padding="10" ColumnDefinitions="*, *, *">
+                                <Label Text="{Binding Product.Naam}" Grid.Column="0"/>
+                                <Label Text="{Binding TotaalAantal}" Grid.Column="1"/>
+                                <Label Text="{Binding Product.Prijs, StringFormat='{}{0:C}'}" Grid.Column="2"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- Buttons -->
+                <HorizontalStackLayout>
+                    <Button Text="Afrekenen" Command="{Binding AfrekenenCommand}" IsEnabled="{Binding SelectedBestelling}" Margin="0,0,10,0"/>
+                    <Button Text="Deselecteren" Command="{Binding DeselecterenCommand}" IsEnabled="{Binding SelectedBestelling}"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

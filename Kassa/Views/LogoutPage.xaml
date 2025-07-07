@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Kassa.ViewModels"
+             xmlns:models="clr-namespace:Kassa.Models"
+             x:Class="Kassa.Views.LogoutPage"
+             x:DataType="viewmodels:LoginViewModel"
+             Title="">
+
+    <Grid BackgroundColor="#2B3078">
+        <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" >
+                <Image Source="logoweb.png" Aspect="AspectFit" WidthRequest="250"/>
+                <Label Text="Bedankt voor uw bezoek!" TextColor="White" FontSize="Large" />
+            </VerticalStackLayout>
+            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="0,50,0,0">
+                <Label Text="Druk op deze knop om uit te loggen" FontSize="Small" Margin="10" TextColor="White"/>
+                <Button Text="Log uit" Clicked="OnLogout" BackgroundColor="#433BFF" TextColor="White" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

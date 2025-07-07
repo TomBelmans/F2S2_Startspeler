@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Companion.ViewModels"
+             xmlns:models="clr-namespace:Companion.Models"
+             x:Class="Companion.Views.LoginPage"
+             x:DataType="viewmodels:LoginViewModel"
+             Shell.NavBarIsVisible="False"
+             Title="">
+
+
+    <Grid RowDefinitions=".3*,*" BackgroundColor="#2B3078">
+        <Grid>
+            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" >
+                <Image Source="logoweb.png" Aspect="AspectFit" WidthRequest="250"/>
+                <Label Text="Plezier start hier!" TextColor="White" FontSize="Large" />
+            </VerticalStackLayout>
+        </Grid>
+        <Grid Grid.Row="1">
+            <VerticalStackLayout HorizontalOptions="Center" WidthRequest="350">
+                <Label Text="Log je in om verder te gaan" TextColor="White" FontSize="Medium"/>
+                <Label Text="Email:" TextColor="White" FontSize="Small" Margin="0,10,0,0" />
+                <Frame BackgroundColor="White" Padding="0" HorizontalOptions="FillAndExpand" CornerRadius="25">
+                    <StackLayout Orientation="Horizontal">
+                        <Frame BackgroundColor="White" HeightRequest="40" WidthRequest="40" CornerRadius="20" Padding="0" Margin="5">
+                            <Image Source="emailicon.png" Aspect="AspectFill"/>
+                        </Frame>
+                        <Entry Placeholder="Email" Text="{Binding Email, Mode=TwoWay}" Keyboard="Email" WidthRequest="300" TextColor="Black" />
+                    </StackLayout>
+                </Frame>
+                <Label Text="Wachtwoord:" TextColor="White" FontSize="Small" Margin="0, 10,0,0"/>
+                <Frame BackgroundColor="White" Padding="0" HorizontalOptions="FillAndExpand" CornerRadius="25">
+                    <StackLayout Orientation="Horizontal">
+                        <Frame BackgroundColor="White" HeightRequest="40" WidthRequest="40" CornerRadius="20" Padding="0" Margin="5">
+                            <Image Source="passicon.png" Aspect="AspectFill"/>
+                        </Frame>
+                        <Entry Placeholder="Wachtwoord" Text="{Binding Wachtwoord, Mode=TwoWay}" IsPassword="True" Keyboard="Text" WidthRequest="300" TextColor="Black"/>
+                    </StackLayout>
+                </Frame>
+
+                <VerticalStackLayout Margin="0,15,0,0">
+                    <Button Text="Log in" Command="{Binding LoginCommand}" BackgroundColor="#433BFF" TextColor="White"  HeightRequest="50" Margin="0,15,0,0"/>
+                    <Button Text="Registreer" Command="{Binding NavigeerNaarRegistratieCommand}" BackgroundColor="#FBFBFE" TextColor="#433BFF"  HeightRequest="50" Margin="0,15,0,0"/>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+
+</ContentPage>

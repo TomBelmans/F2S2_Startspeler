@@ -1,0 +1,52 @@
+Github URL:
+-----------
+https://github.com/it-graduaten/startspeler-geel-2
+
+MySQL gegevens:
+---------------
+De MySQL databank is gemaakt met behulp van MariaDb.
+Wij hebben de volgende gegevens gebruikt om de connectie op te bouwen:
+name="StartspelercompanionConnection" connectionString="Server=localhost;Port=3306;Database=StartspelerCompanion;User ID=root;Password=GroepGeel2;"
+
+Het SQL script om de databank te vullen met data staat op de locatie: API\Data\SQL\StarspelerScript.sql
+
+Connectie lokale API:
+---------------------
+Zoek het lokale ip-adres van uw computer op door middel van in de Terminal het commando "ip-config" in te drukken en vervolgens het ip-adres te registreren
+IPv4 Address. . . . . . . . . . . : 192.168.0.201
+
+Om met behulp van de API een lokale connectie op te bouwen tussen API en Companion, dient u de volgende aanpassingen te maken in de API en Companion applicaties:
+
+* bij API/Properties/launchSettings.json => 
+
+"profiles": {
+  "API": {
+    "commandName": "Project",
+    "dotnetRunMessages": true,
+    "launchBrowser": true,
+    "applicationUrl": "https://localhost:7153;http://localhost:5199;https://192.168.0.207:7153",
+    "environmentVariables": {
+      "ASPNETCORE_ENVIRONMENT": "Development"
+    }
+  },
+
+
+* bij de Companion applicatie => in de ViewModels:
+- EvenementViewModel
+- LoginViewModel
+- MenukaarViewModel
+- WinkelwagenViewModel
+ 
+
+Logingegevens van reeds bestaande gebruikers in de applicatie:
+--------------------------------------------------------------
+
+email			| wachtwoord
+------------------------|-------------------
+klant@ssp.be		| Klant_1
+medewerker@ssp.be	| Medewerker_1
+communityleader@ssp.be	| Communityleader_1
+beheerder@ssp.be	| Beheerder_1
+
+Het fictieve email-adres van de gebruiker is gekoppeld aan een bepaalde rol, overeenstemmend met het email adres.
+Bepaalde delen van een applicatie of een volledige applicatie kunnen hierdoor niet toegankelijk zijn voor de gebruiker.

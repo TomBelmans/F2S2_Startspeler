@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Companion.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Companion"
+    xmlns:views="clr-namespace:Companion.Views"
+    xmlns:models="clr-namespace:Companion.Models"
+    xmlns:viewmodel="clr-namespace:Companion.ViewModels"
+    Shell.TabBarIsVisible="False"
+    x:Name="mainShell"
+    x:DataType="viewmodel:LoginViewModel"
+    Title="{Binding Title}">
+
+    <ShellContent
+        Title=""
+        ContentTemplate="{DataTemplate views:LoginPage}"
+        FlyoutItemIsVisible="False"
+        Shell.FlyoutBehavior="Disabled"
+        Route="LoginPage" />
+
+    <FlyoutItem Route="ProductenPage" FlyoutDisplayOptions="AsMultipleItems" >
+        <ShellContent
+        Title="Menukaart"
+        Icon="{x:Static models:Icons.OrderIcon}"
+        ContentTemplate="{DataTemplate views:MenukaartPage}"
+        Route="MenukaartPage" />
+        <ShellContent
+            Title="Winkelwagen"
+            Icon="{x:Static models:Icons.OrderIcon}"
+            ContentTemplate="{DataTemplate views:WinkelwagenPage}"
+            Route="WinkelwagenPage" />
+        <ShellContent
+        Title="Evenementen"
+        Icon="{x:Static models:Icons.ProductIcon}"
+        ContentTemplate="{DataTemplate views:EvenementPage}"
+        Route="EvenementPage" />
+    </FlyoutItem>
+
+    <MenuItem
+        Text="Log uit"
+        Command="{Binding LogoutCommand}"
+        IconImageSource="logouticon.png"
+        />
+
+</Shell>

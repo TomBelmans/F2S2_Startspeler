@@ -1,0 +1,36 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Achtergrondkleur van de pagina -->
+    <Color x:Key="BackgroundColor">#2B3078</Color>
+    <!-- Paarse kleur -->
+
+    <!-- Achtergrondkleur van de pagina -->
+    <LinearGradientBrush x:Key="BackgroundGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#4E518B" Offset="1"/>
+        <GradientStop Color="#A88FFF" Offset="3"/>
+    </LinearGradientBrush>
+
+    <Style TargetType="Entry">
+        <Setter Property="BackgroundColor" Value="White"/>
+        <Setter Property="TextColor" Value="Black"/>
+        <Setter Property="PlaceholderColor" Value="Gray"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
+
+    <Style TargetType="Picker">
+        <Setter Property="BackgroundColor" Value="White"/>
+        <Setter Property="TextColor" Value="Black"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
+
+    <Style TargetType="Frame">
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="BorderColor" Value="#2B3078" />
+        <Setter Property="HasShadow" Value="True"/>
+    </Style>
+
+</ResourceDictionary>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Companion.ViewModels"
+             xmlns:models="clr-namespace:Companion.Models"
+             x:Class="Companion.Views.EvenementPage"
+             x:DataType="viewmodels:EvenementViewModel"
+             Title="{Binding Title}"
+             Background="{StaticResource BackgroundGradient}">
+
+    <StackLayout Padding="20">
+        <Label Text="Evenementen" 
+               FontSize="Large" 
+               FontAttributes="Bold"
+               TextColor="White"
+               HorizontalOptions="Center"/>
+
+        <!-- Lijstweergave voor evenementen -->
+        <CollectionView ItemsSource="{Binding Evenementen}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Evenement">
+                    <Frame Margin="0,10,0,10" Padding="10" BackgroundColor="White">
+                        <StackLayout>
+                            <Label Text="{Binding naam}" 
+                                   FontAttributes="Bold"
+                                   FontSize="Medium"
+                                   TextColor="Black"/>
+                            <Label Text="{Binding omschrijving}" 
+                                   FontAttributes="Bold"
+                                   FontSize="Small"
+                                   TextColor="Black"/>
+                            <Label Text="{Binding startDatum, StringFormat='Start: {0:d}'}" 
+                                   TextColor="Black"/>
+                            <Label Text="{Binding eindDatum, StringFormat='Einde: {0:d}'}" 
+                                   TextColor="Black"/>
+                            <!-- Knop om deel te nemen aan het evenement -->
+                            <Button Text="Deelnemen" 
+                                    Command="{Binding Path=BindingContext.DeelnemenCommand, Source={x:Reference Name=EvenementPage}}"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="Green"
+                                    TextColor="White"
+                                    Margin="0,10,0,0"/>
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>
